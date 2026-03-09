@@ -13,4 +13,3 @@ const databaseConnection = async () => {
 
 module.exports = databaseConnection;
 
-// mongodb+srv://kamaldeep63951_db_user:TbvLsRK2ZM4YdsaM@cluster0.xsz2my5.mongodb.net/?appName=Cluster0
