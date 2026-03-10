@@ -13,7 +13,20 @@ databaseConnection();
 const app = express();
 
 app.use(express.json());
-app.use(cors());
+
+app.use(
+  cors({
+    origin: "https://bookstore-app-bay.vercel.app",
+    credentials: true,
+  }),
+);
+
+app.get("/", (req, res) => {
+  res.json({
+    status: "API running",
+    service: "Bookstore API"
+  });
+});
 
 app.use("/book", authMiddleWare, bookRouter);
 app.use("/user", userRouter);
