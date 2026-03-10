@@ -1,269 +1,3 @@
-// import React, { useEffect, useState } from "react";
-// import { bookBaseUrl } from "../../axiosInstance";
-// import { MdDelete } from "react-icons/md";
-// import { FaPen } from "react-icons/fa";
-// import Navbar from "./Navbar";
-// import toast, { Toaster } from "react-hot-toast";
-
-
-// const Home = () => {
-//   const [bookForm, setBookForm] = useState({
-//     BookName: "",
-//     BookTitle: "",
-//     Author: "",
-//     SellingPrice: "",
-//     PublishDate: "",
-//     Id: "",
-//   });
-//   const [bookList, setBookList] = useState([]);
-//   const [isUpdating, setIsUpdating] = useState(false);
-
-//   const getAllbookList = async () => {
-//     try {
-//       const { data } = await bookBaseUrl.get("booklists");
-//       setBookList(data?.BookList);
-//     } catch (error) {
-//       console.log(error);
-//     }
-//   };
-
-//   useEffect(() => {
-//     getAllbookList();
-//   }, []);
-
-//   const handleFormChange = (e) => {
-//     const { name, value } = e.target;
-//     setBookForm((prev) => ({
-//       ...prev,
-//       [name]: value,
-//     }));
-//   };
-
-//   const handleSubmit = async () => {
-//     try {
-//       if (!isUpdating) {
-//         if (
-//           !bookForm?.BookName ||
-//           !bookForm.BookTitle ||
-//           !bookForm.Author ||
-//           !bookForm.SellingPrice
-//         ) {
-//           toast.error("All field's are required")
-//         }
-
-//         const { data } = await bookBaseUrl.post("/addbook", bookForm);
-//         if (data?.Success) {
-//           toast.success(data?.Message);
-//           getAllbookList();
-//           setBookForm({
-//             BookName: "",
-//             BookTitle: "",
-//             Author: "",
-//             SellingPrice: "",
-//             PublishDate: "",
-//             Id: "",
-//           });
-//         }
-//       } else {
-//         const { data } = await bookBaseUrl.put("/updatebook", bookForm);
-//         if (data?.Success) {
-//           // alert(data?.Message);
-//           toast.success(data?.Message);
-//           getAllbookList();
-//           setBookForm({
-//             BookName: "",
-//             BookTitle: "",
-//             Author: "",
-//             SellingPrice: "",
-//             PublishDate: "",
-//             Id: "",
-//           });
-//           setIsUpdating(false);
-//         }
-//       }
-//     } catch (error) {
-//       console.log(error);
-//     }
-//   };
-
-//   const handleDelete = async (id) => {
-//     try {
-//       const { data } = await bookBaseUrl.post("deletebook", {
-//         Id: id,
-//       });
-
-//       if (data?.Success) {
-//         toast.success(data?.Message);
-//         getAllbookList();
-//       }
-//     } catch (error) {
-//       console.log(error);
-//     }
-//   };
-
-//   const handleUpdate = (data) => {
-//     setBookForm({
-//       BookName: data?.BookName,
-//       BookTitle: data?.BookTitle,
-//       Author: data?.Author,
-//       SellingPrice: data?.SellingPrice,
-//       PublishDate: data?.PublishDate,
-//       Id: data?._id,
-//     });
-//     setIsUpdating(true);
-//   };
-
-//   return (
-//     <>
-//       <Navbar />
-
-//       <div className="w-full px-5 min-h-[calc(100vh-60px)]">
-//         <Toaster/>
-//         <div className="w-full grid grid-cols-5 gap-3 my-4">
-//           <div className="w-full flex flex-col gap-2">
-//             <label htmlFor="">Book Name</label>
-//             <input
-//               type="text"
-//               placeholder="Book Name"
-//               className="w-full border-2 border-gray-300 text-gray-800  rounded-sm outline-none h-8 px-2"
-//               name="BookName"
-//               value={bookForm.BookName}
-//               onChange={handleFormChange}
-//             />
-//           </div>
-//           <div className="w-full flex flex-col gap-2">
-//             <label htmlFor="">Book Title</label>
-//             <input
-//               type="text"
-//               placeholder="Book Title"
-//               className="w-full border-2 border-gray-300 text-gray-800  rounded-sm outline-none h-8 px-2"
-//               name="BookTitle"
-//               value={bookForm.BookTitle}
-//               onChange={handleFormChange}
-//             />
-//           </div>
-//           <div className="w-full flex flex-col gap-2">
-//             <label htmlFor="">Author</label>
-//             <input
-//               type="text"
-//               placeholder="Author"
-//               className="w-full border-2 border-gray-300 text-gray-800  rounded-sm outline-none h-8 px-2"
-//               name="Author"
-//               value={bookForm.Author}
-//               onChange={handleFormChange}
-//             />
-//           </div>
-//           <div className="w-full flex flex-col gap-2">
-//             <label htmlFor="">Selling Price</label>
-//             <input
-//               type="text"
-//               placeholder="Selling Price"
-//               className="w-full border-2 border-gray-300 text-gray-800  rounded-sm outline-none h-8 px-2"
-//               name="SellingPrice"
-//               value={bookForm.SellingPrice}
-//               onChange={handleFormChange}
-//             />
-//           </div>
-//           <div className="w-full flex flex-col gap-2">
-//             <label htmlFor="">Publish Date</label>
-//             <input
-//               type="date"
-//               placeholder="Selling Price"
-//               className="w-full border-2 border-gray-300 text-gray-800  rounded-sm outline-none h-8 px-2"
-//               name="PublishDate"
-//               value={bookForm.PublishDate}
-//               onChange={handleFormChange}
-//             />
-//           </div>
-//         </div>
-//         <div className="w-full flex justify-end">
-//           <button
-//             className="bg-gray-700 text-white h-9 w-22 rounded-md cursor-pointer"
-//             onClick={handleSubmit}
-//           >
-//             SUBMIT
-//           </button>
-//         </div>
-
-//         <div className="w-full mt-10">
-//           <div className="w-full">
-//             <table className="w-full bg-white divide-y divide-gray-200">
-//               <thead className="bg-gray-50">
-//                 <tr>
-//                   <th className="tracking-wider px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-//                     Book Name
-//                   </th>
-//                   <th className="tracking-wider px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-//                     Book Title
-//                   </th>
-//                   <th className="tracking-wider px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-//                     Author
-//                   </th>
-//                   <th className="tracking-wider px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-//                     Selling Price
-//                   </th>
-//                   <th className="tracking-wider px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-//                     Publish Date
-//                   </th>
-//                   <th className="tracking-wider px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-//                     Action
-//                   </th>
-//                 </tr>
-//               </thead>
-//               <tbody className="bg-white divide-y divide-gray-200">
-//                 {bookList?.map((book, index) => {
-//                   return (
-//                     <tr className="hover:bg-gray-200" key={index}>
-//                       <td className="px-6 py-3 whitespace-nowrap">
-//                         {book?.BookName}
-//                       </td>
-//                       <td className="px-6 py-3 whitespace-nowrap">
-//                         {book?.BookTitle}
-//                       </td>
-//                       <td className="px-6 py-3 whitespace-nowrap">
-//                         {book?.Author}
-//                       </td>
-//                       <td className="px-6 py-3 whitespace-nowrap">
-//                         {book?.SellingPrice}
-//                       </td>
-//                       <td className="px-6 py-3 whitespace-nowrap">
-//                         {book?.PublishDate}
-//                       </td>
-//                       <td className="px-6 py-3 whitespace-nowrap">
-//                         <div className="w-20 flex justify-center gap-5">
-//                           <div
-//                             className="h-8 w-8 flex justify-center items-center bg-red-100 text-red-600 rounded text-lg cursor-pointer"
-//                             onClick={() => handleDelete(book._id)}
-//                           >
-//                             <span>
-//                               <MdDelete />
-//                             </span>
-//                           </div>
-//                           <div
-//                             className="h-8 w-8 flex justify-center items-center bg-green-100 text-green-600 rounded text-lg cursor-pointer"
-//                             onClick={() => handleUpdate(book)}
-//                           >
-//                             <span>
-//                               <FaPen />
-//                             </span>
-//                           </div>
-//                         </div>
-//                       </td>
-//                     </tr>
-//                   );
-//                 })}
-//               </tbody>
-//             </table>
-//           </div>
-//         </div>
-//       </div>
-//     </>
-//   );
-// };
-
-// export default Home;
-
-
 import React, { useEffect, useMemo, useState } from "react";
 import { bookBaseUrl } from "../../axiosInstance";
 import { MdDelete } from "react-icons/md";
@@ -307,7 +41,7 @@ const Home = () => {
     return bookList.filter((book) =>
       `${book.BookName} ${book.BookTitle} ${book.Author}`
         .toLowerCase()
-        .includes(search.toLowerCase())
+        .includes(search.toLowerCase()),
     );
   }, [bookList, search]);
 
@@ -398,7 +132,6 @@ const Home = () => {
       <Toaster />
 
       <div className="bg-gray-100 min-h-[calc(100vh-60px)] p-6">
-
         {/* HEADER */}
         <div className="flex flex-col md:flex-row justify-between items-center gap-4 mb-6">
           <h2 className="text-2xl font-bold text-gray-700">
@@ -424,18 +157,22 @@ const Home = () => {
             {Object.keys(bookForm).map((key) =>
               key !== "Id" ? (
                 <div key={key} className="flex flex-col">
-                  <label className="text-sm text-gray-600 mb-1">
-                    {key}
-                  </label>
+                  <label className="text-sm text-gray-600 mb-1">{key}</label>
                   <input
-                    type={key === "PublishDate" ? "date" : key=== "SellingPrice" ? "number" : "text"}
+                    type={
+                      key === "PublishDate"
+                        ? "date"
+                        : key === "SellingPrice"
+                          ? "number"
+                          : "text"
+                    }
                     name={key}
                     value={bookForm[key]}
                     onChange={handleFormChange}
                     className="border px-3 py-2 rounded-lg focus:ring-2 focus:ring-gray-300 outline-none"
                   />
                 </div>
-              ) : null
+              ) : null,
             )}
           </div>
 
@@ -461,7 +198,6 @@ const Home = () => {
         {/* ================= BOOK LIST ================= */}
 
         <div className="mt-6">
-
           {/* DESKTOP TABLE */}
           <div className="hidden md:block bg-white rounded-xl shadow-md overflow-x-auto">
             <table className="w-full text-sm text-left min-w-[800px]">
@@ -483,9 +219,7 @@ const Home = () => {
                       key={book._id}
                       className="border-b hover:bg-gray-50 transition"
                     >
-                      <td className="px-6 py-3 font-medium">
-                        {book.BookName}
-                      </td>
+                      <td className="px-6 py-3 font-medium">{book.BookName}</td>
                       <td className="px-6 py-3">{book.BookTitle}</td>
                       <td className="px-6 py-3">{book.Author}</td>
                       <td className="px-6 py-3 text-green-600 font-semibold">
@@ -571,7 +305,6 @@ const Home = () => {
               </div>
             )}
           </div>
-
         </div>
 
         {/* PAGINATION */}
@@ -596,7 +329,6 @@ const Home = () => {
             Next
           </button>
         </div>
-
       </div>
     </>
   );

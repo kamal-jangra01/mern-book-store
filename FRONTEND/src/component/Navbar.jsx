@@ -1,40 +1,3 @@
-// import React from "react";
-// import { useNavigate } from "react-router-dom";
-// //BookName> BootTitle> AuthorName> SellingPrice> PublishDate;
-
-// const Navbar = () => {
-//   const navigate = useNavigate();
-
-//   const handleLogout = () => {
-//     localStorage.removeItem("userAuth");
-//     navigate("/login");
-//   };
-//   return (
-//     <div className="w-full flex justify-between h-15 items-center bg-gray-200 shadow px-5">
-//       <div className="w-[10%] h-full flex items-center">
-//         <h1 className="font-bold text-zinc-800">LOGO</h1>
-//       </div>
-//       <div className="w-[50%] h-full">
-//         <ul className="w-full h-full flex gap-6 list-none items-center text-zinc-800 font-medium">
-//           <li className="cursor-pointer">HOME</li>
-//           <li className="cursor-pointer">ABOUT</li>
-//           <li className="cursor-pointer">CONTACT</li>
-//         </ul>
-//       </div>
-//       <button
-//         className="py-1 px-4 bg-orange-500 rounded text-white cursor-pointer"
-//         onClick={handleLogout}
-//       >
-//         Logout
-//       </button>
-//     </div>
-//   );
-// };
-
-// export default Navbar;
-
-
-
 import { useState, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { Menu, X } from "lucide-react";
@@ -68,7 +31,6 @@ const Navbar = () => {
     <nav className="sticky top-0 z-50 backdrop-blur-md bg-white/70 shadow-md border-b">
       <div className="max-w-7xl mx-auto px-6">
         <div className="flex justify-between items-center h-16">
-
           {/* LOGO */}
           <h1
             className="text-2xl font-bold text-gray-800 cursor-pointer"
@@ -79,7 +41,6 @@ const Navbar = () => {
 
           {/* DESKTOP MENU */}
           <div className="hidden md:flex items-center gap-8 font-medium text-gray-700">
-
             <NavLink to="/" className="hover:text-black">
               Home
             </NavLink>
@@ -125,7 +86,6 @@ const Navbar = () => {
         }`}
       >
         <div className="bg-white/90 backdrop-blur-md px-6 pb-6 space-y-4 shadow-lg">
-
           <NavLink
             to="/"
             onClick={() => setIsOpen(false)}
